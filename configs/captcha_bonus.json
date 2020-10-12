@@ -1,6 +1,6 @@
 {
-  "name": "Captcha",
-  "n_gpu": 1,
+  "name": "CaptchaBonus",
+  "n_gpu": 0,
   "log_config": "src/logger/logger_config.json",
   "save_dir": "saved/",
   "arch": {
@@ -13,13 +13,13 @@
     "type": "CaptchaDataLoader",
     "args": {
       "data_path": "data/geto-project1",
-      "n_len": [5, 6],
+      "n_len": [1, 5],
       "train_total": 200000,
-      "characters": " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ",
+      "characters": " 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()",
       "batch_size": 1280,
       "shuffle": false,
       "validation_split": 0.1,
-      "num_workers": 4
+      "num_workers": 0
     }
   },
   "loss": "ctc_loss",

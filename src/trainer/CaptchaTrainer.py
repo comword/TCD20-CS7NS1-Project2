@@ -39,7 +39,6 @@ class CaptchaTrainer(BaseTrainer):
         tbar = tqdm(self.data_loader)
         for batch_idx, (imgid, data, target, input_lengths, target_lengths) in enumerate(tbar):
             data, target = data.to(self.device), target.to(self.device)
-            batch_size = data.shape[0]
             # if batch_size < 2:
             #     continue
             self.optimizer.zero_grad()

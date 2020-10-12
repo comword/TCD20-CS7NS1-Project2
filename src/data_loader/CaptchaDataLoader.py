@@ -1,5 +1,6 @@
 from base import BaseDataLoader
 import torch
+import torch.nn.utils.rnn as rnn_utils
 import os.path
 import random
 import numpy as np
@@ -12,7 +13,7 @@ from model.CaptchaCNN import CaptchaCNN
 class CaptchaDataLoader(BaseDataLoader):
 
     def __init__(self, data_path, batch_size, n_len=[5,6], train_total=5000, width=128, height=64, 
-                 shuffle=True, validation_split=0.0, num_workers=1, training=True,
+                 shuffle=True, validation_split=0.0, num_workers=0, training=True,
                  characters=' 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'):
         self.characters = characters
         self.width = width

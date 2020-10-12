@@ -30,13 +30,13 @@ class CaptchaDataset(Dataset):
         random_str = ''.join([random.choice(self.characters[1:]) for j in range(label_length)])
         image = to_tensor(self.generator.generate_image(random_str))
         target = torch.tensor([self.characters.find(x) for x in random_str], dtype=torch.long)
+        target = torch.cat((target, torch.zeros(self.label_length[1]-len(random_str), dtype=torch.long)), 0)
         input_length = torch.full(size=(1, ), fill_value=self.input_length, dtype=torch.long)
         target_length = torch.full(size=(1, ), fill_value=label_length, dtype=torch.long)
         return index, image, target, input_length, target_length
 
 if __name__ == "__main__":
-    # chars = '  0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~'
-    chars = ' 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'
-    dataset = CaptchaDataset(chars, 1, 128, 64, 8, (5, 6))
+    chars = ' 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()'
+    dataset = CaptchaDataset(chars, 1, 128, 64, 8, (1, 5))
     index, image, target, input_length, target_length = dataset[0]
     print(''.join([chars[x] for x in target]), input_length, target_length)
