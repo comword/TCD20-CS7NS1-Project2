@@ -127,3 +127,18 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Editor, os cache directory
+.vscode/
+.idea/
+__MACOSX/
+tmp/
+.DS_Store
+
+# Trained models
+*.h5
+*.pth
+
+# Dataset
+data/
+saved/

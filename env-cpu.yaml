@@ -1,9 +1,9 @@
 name: SCProj
 channels:
-  - defaults
-  - anaconda
   - pytorch
+  - anaconda
   - conda-forge
+  - defaults
 dependencies:
   - pip
   - pylint

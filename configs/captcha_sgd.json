@@ -25,25 +25,17 @@
   "loss": "ctc_loss",
   "metrics": ["accuracy"],
   "optimizer": {
-    "type": "Adam",
+    "type": "SGD",
     "args": {
-      "lr": 0.001,
-      "weight_decay": 0,
-      "amsgrad": true
-    }
-  },
-  "lr_scheduler": {
-    "type": "PolynomialLR",
-    "args": {
-      "step_size": 10,
-      "iter_max": 500,
-      "power": 0.9
+      "weight_decay": 5.0e-4,
+      "lr": 0.002,
+      "momentum": 0.9
     }
   },
   "trainer": {
     "type": "CaptchaTrainer",
     "args": {},
-    "epochs": 100,
+    "epochs": 150,
     "save_period": 15,
     "verbosity": 2,
     "monitor": "max val_accuracy",

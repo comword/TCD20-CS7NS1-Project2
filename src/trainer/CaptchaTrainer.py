@@ -84,7 +84,7 @@ class CaptchaTrainer(BaseTrainer):
                 tbar.set_description('Test loss: %.3f' % (test_loss / (batch_idx + 1)))
                 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
-                self.valid_metrics.update('loss', loss.item())
+                self.valid_metrics.update('loss', test_loss / (batch_idx + 1))
                 for met in self.metric_ftns:
                     self.valid_metrics.update(met.__name__, met(self, output, target))
                 self.writer.add_image('input', make_grid(data.cpu(), nrow=8, normalize=True))
@@ -95,18 +95,6 @@ class CaptchaTrainer(BaseTrainer):
 
         # Fast test during the training
         result = self.valid_metrics.result()
-        # self.writer.add_scalar('val/total_loss_epoch', test_loss, epoch)
-        # self.writer.add_scalar('val/mIoU', result["mIoU"], epoch)
-        # self.writer.add_scalar('val/Acc', result["Acc"], epoch)
-        # self.writer.add_scalar('val/Acc_class', result["Acc_class"], epoch)
-        # self.writer.add_scalar('val/fwIoU', result["FWIoU"], epoch)
-        # print('Validation:')
-        # print('[Epoch: %d]' % epoch)
-        # print("Acc:{}, Acc_class:{}, mIoU:{}, fwIoU: {}".format(result["Acc"],
-        #                                                         result["Acc_class"],
-        #                                                         result["mIoU"],
-        #                                                         result["FWIoU"]))
-        # print('Loss: %.3f' % test_loss)
 
         return result
 
@@ -130,29 +118,17 @@ class CaptchaTrainer(BaseTrainer):
             dataloader = self.data_loader
 
         with torch.no_grad():
-            # if not self.crf_only:
-                tbar = tqdm(dataloader)
-                for i, (image_ids, data, target) in enumerate(tbar):
-                    data, target = data.to(self.device), target.to(self.device)
-                    batch_size = data.shape[0]
-                    if batch_size < 2:
-                        continue
-                    output = self.model(data)
-                    loss = self.criterion(output, target)
-                    total_loss += loss.item() * batch_size
+            for batch_idx, (imgid, data, target, input_lengths, target_lengths) in enumerate(tbar):
+                data, target = data.to(self.device), target.to(self.device)
+                output = self.model(data)
+                output_log_softmax = F.log_softmax(output, dim=-1)
+                loss = self.criterion(output_log_softmax, target, input_lengths, target_lengths)
+                test_loss += loss.item()
+                tbar.set_description('Test loss: %.3f' % (test_loss / (batch_idx + 1)))
 
-                    pred = output.data.cpu().numpy()
-                    target = target.cpu().numpy()
-                    pred = np.argmax(pred, axis=1)
-                    # Add batch sample into evaluator
-                    self.valid_metrics.add_batch(target, pred)
+                
 
-                    if self.logit_dir is not None:
-                        for image_id, logit in zip(image_ids, output):
-                            filename = os.path.join(self.logit_dir, image_id + ".npy")
-                            np.save(filename, logit.cpu().numpy())
-
-                    val_log = self.valid_metrics.result()
-                    total_metrics.update(**{'val_' + k: v for k, v in val_log.items()})
+                val_log = self.valid_metrics.result()
+                total_metrics.update(**{'val_' + k: v for k, v in val_log.items()})
 
         return total_loss, total_metrics
