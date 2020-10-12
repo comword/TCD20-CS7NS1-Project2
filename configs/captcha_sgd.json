@@ -6,7 +6,7 @@
   "arch": {
     "type": "CaptchaCNN",
     "args": {
-      "n_classes": 95
+      "n_classes": 63
     }
   },
   "data_loader": {
