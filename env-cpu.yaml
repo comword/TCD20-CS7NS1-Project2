@@ -1,0 +1,24 @@
+name: SCProj
+channels:
+  - defaults
+  - anaconda
+  - pytorch
+  - conda-forge
+dependencies:
+  - pip
+  - pylint
+  - numpy
+  - matplotlib
+  - pandas
+  - tqdm
+  - pillow < 7
+  - scikit-image
+  - opencv
+  - pytorch
+  - scipy
+  - torchvision
+  - tensorboardx
+  - pip:
+    - joblib
+    - captcha
+    - torchnet
