@@ -6,7 +6,7 @@
   "arch": {
     "type": "CaptchaCNN",
     "args": {
-      "n_classes": 95
+      "n_classes": 73
     }
   },
   "data_loader": {
@@ -25,11 +25,11 @@
   "loss": "ctc_loss",
   "metrics": ["accuracy"],
   "optimizer": {
-    "type": "SGD",
+    "type": "Adam",
     "args": {
-      "weight_decay": 5.0e-4,
-      "lr": 0.002,
-      "momentum": 0.9
+      "lr": 0.001,
+      "weight_decay": 0,
+      "amsgrad": true
     }
   },
   "lr_scheduler": {

@@ -124,9 +124,7 @@ class CaptchaTrainer(BaseTrainer):
                 loss = self.criterion(output_log_softmax, target, input_lengths, target_lengths)
                 test_loss += loss.item()
                 tbar.set_description('Test loss: %.3f' % (test_loss / (batch_idx + 1)))
-
                 
-
                 val_log = self.valid_metrics.result()
                 total_metrics.update(**{'val_' + k: v for k, v in val_log.items()})
 

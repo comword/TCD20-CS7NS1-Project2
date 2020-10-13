@@ -26,13 +26,23 @@ class CaptchaDataLoaderTestCase(unittest.TestCase):
                 plt.figure()
                 plt.imshow(image)
                 plt.show()
-                return
 
     def test_training(self):
         dataset = CaptchaDataLoader("", 16, characters=" 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()",
         n_len=[1,5])
         self.preview(dataset)
 
+    def test_imgloading(self):
+        dataset = CaptchaDataLoader("data/geto-project1", 16, training=False)
+        self.preview(dataset)
+        # for i, (_, images) in enumerate(dataset):
+        #     if i == 0:
+        #         kwargs = {"nrow": 4, "padding": 40}
+        #         image = make_grid(images, pad_value=-1, **kwargs).numpy()
+        #         image = np.transpose(image, (1, 2, 0))
+        #         plt.figure()
+        #         plt.imshow(image)
+        #         plt.show()
 
 if __name__ == '__main__':
     unittest.main()

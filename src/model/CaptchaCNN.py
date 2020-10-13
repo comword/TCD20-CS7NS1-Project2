@@ -39,7 +39,7 @@ class CaptchaCNN(nn.Module):
         self.fc = nn.Linear(in_features=256, out_features=n_classes)
     
     def infer_features(self):
-        x = torch.zeros((1,)+self.input_shape)
+        x = torch.zeros((1,) + self.input_shape)
         x = self.cnn(x)
         x = x.reshape(x.shape[0], -1, x.shape[-1])
         return x.shape[1]
@@ -51,6 +51,7 @@ class CaptchaCNN(nn.Module):
         x, _ = self.lstm(x)
         x = self.fc(x)
         return x
+
 if __name__ == "__main__":
     n_classes = 63
     height, width = 64, 128

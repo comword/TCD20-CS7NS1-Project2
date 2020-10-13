@@ -3,6 +3,7 @@ import torch.utils.data as data
 import os
 from pathlib import Path
 from PIL import Image
+from torchvision.transforms.functional import to_tensor
 
 class ImageDataset(data.Dataset):
     """ImageDataset.
@@ -35,7 +36,8 @@ class ImageDataset(data.Dataset):
         image_id = self.files[image_id]
         image_path = os.path.join(self.root, image_id)
         image = Image.open(image_path)
-        return os.path.basename(self.root) + "_" + os.path.splitext(image_id)[0], image
+        # return os.path.basename(self.root) + "_" + os.path.splitext(image_id)[0], image
+        return image_id, image
 
     def __len__(self):
         return len(self.files)
@@ -53,7 +55,7 @@ class ImageDataset(data.Dataset):
             image = self.transform(image)
         
         image = np.asarray(image)
-        return image_id, np.moveaxis(image, -1, 0).astype(np.float32)
+        return image_id, to_tensor(image), [], [], []
 
     def __repr__(self):
         fmt_str = "Dataset: " + self.__class__.__name__ + "\n"
