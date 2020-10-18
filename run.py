@@ -52,19 +52,19 @@ class DemoMain:
             s += a[-1]
         return s
 
-    def main(self, image):
+    def main(self, image, outpath):
         self.data_loader = CaptchaDataLoader(image, 16, training=False, shuffle=False)
         self.characters = self.config["data_loader"]["args"]["characters"]
         tbar = tqdm(self.data_loader)
         with torch.no_grad():
-            with open("stuff.txt", "w") as f:
+            with open(outpath, "w") as f:
                 for _, (imgid, images, _, _, _) in enumerate(tbar):
                     images = images.to(self.device)
                     output = self.model(images)
                     output_argmax = output.detach().permute(1, 0, 2).argmax(dim=-1)
                     output_argmax = output_argmax.cpu().numpy()
                     for res in zip(imgid, output_argmax):
-                        f.write("%s, %s\n" % (res[0], self.decode(res[1], self.characters)))
+                        f.write("%s,%s\n" % (res[0], self.decode(res[1], self.characters)))
                 
 if __name__ == '__main__':
     args = argparse.ArgumentParser(description='PyTorch Demo')
@@ -76,9 +76,11 @@ if __name__ == '__main__':
                       help='indices of GPUs to enable (default: all)')
     args.add_argument('-i', '--image', type=str, required=True,
                       help='path to image to be processed')
+    args.add_argument('-o', '--output', type=str, required=True,
+                      help='file to output')
 
     config = ConfigParser.from_args(args)
     config.init_log()
     m = DemoMain(config)
     arg_parsed = args.parse_args()
-    m.main(arg_parsed.image)
+    m.main(arg_parsed.image, arg_parsed.output)
