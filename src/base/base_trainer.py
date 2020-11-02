@@ -28,6 +28,7 @@ class BaseTrainer:
         self.epochs = cfg_trainer['epochs']
         self.save_period = cfg_trainer['save_period']
         self.monitor = cfg_trainer.get('monitor', 'off')
+        self.reset_best = cfg_trainer.get('reset_best', False)
 
         # configuration to monitor model performance and save best
         if self.monitor == 'off':
@@ -144,7 +145,11 @@ class BaseTrainer:
         self.logger.info("Loading checkpoint: {} ...".format(resume_path))
         checkpoint = torch.load(resume_path)
         self.start_epoch = checkpoint['epoch'] + 1
-        self.mnt_best = checkpoint['monitor_best']
+
+        if self.reset_best == True:
+            self.mnt_best = 0
+        else:
+            self.mnt_best = checkpoint['monitor_best']
 
         # load architecture params from checkpoint.
         if checkpoint['config']['arch'] != self.config['arch']:

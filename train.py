@@ -48,7 +48,8 @@ if __name__ == '__main__':
     options = [
         CustomArgs(['--lr', '--learning_rate'], type=float, target='optimizer;args;lr'),
         CustomArgs(['--bs', '--batch_size'], type=int, target='data_loader;args;batch_size'),
-        CustomArgs(['--ec', '--epoch_count'], type=int, target='arch;args;epoch_count')
+        CustomArgs(['--ec', '--epoch_count'], type=int, target='arch;args;epoch_count'),
+        CustomArgs(['--rb', '--reset_best'], type=bool, target='trainer;reset_best')
     ]
     config = ConfigParser.from_args(args, options)
     config.init_log()
