@@ -13,9 +13,10 @@
     "type": "CaptchaDataLoader",
     "args": {
       "data_path": "data/geto-project1",
-      "n_len": [1, 6],
+      "n_len": [1, 7],
       "train_total": 200000,
       "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-/:;<=>?@[\\]^_`{|}~",
+      "resize_to": [200, 100],
       "batch_size": 1280,
       "shuffle": false,
       "validation_split": 0.1,

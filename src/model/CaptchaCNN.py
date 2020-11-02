@@ -54,7 +54,8 @@ class CaptchaCNN(nn.Module):
 
 if __name__ == "__main__":
     n_classes = 63
-    height, width = 64, 128
+    # height, width = 64, 128
+    height, width = 100, 200
     model = CaptchaCNN(n_classes, input_shape=(3, height, width))
     inputs = torch.zeros((1, 3, height, width))
     outputs = model(inputs)
