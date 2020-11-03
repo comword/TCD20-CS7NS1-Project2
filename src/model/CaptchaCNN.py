@@ -11,7 +11,7 @@ from collections import OrderedDict
 
 
 class CaptchaCNN(nn.Module):
-    def __init__(self, n_classes, input_shape=(3, 64, 128)):
+    def __init__(self, n_classes, input_shape):
         super(CaptchaCNN, self).__init__()
         self.input_shape = input_shape
         channels = [32, 64, 128, 256, 256]
@@ -55,7 +55,7 @@ class CaptchaCNN(nn.Module):
 if __name__ == "__main__":
     n_classes = 63
     # height, width = 64, 128
-    height, width = 100, 200
+    height, width = 80, 160
     model = CaptchaCNN(n_classes, input_shape=(3, height, width))
     inputs = torch.zeros((1, 3, height, width))
     outputs = model(inputs)

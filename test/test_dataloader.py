@@ -28,8 +28,8 @@ class CaptchaDataLoaderTestCase(unittest.TestCase):
                 plt.show()
 
     def test_training(self):
-        dataset = CaptchaDataLoader("", 16, characters=" 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%^&*()",
-        n_len=[1,5])
+        dataset = CaptchaDataLoader("", 16, characters=" abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-/:<=>?@[\\]^{|}~",
+        n_len=[1, 6], resize_to=[200, 100])
         self.preview(dataset)
 
     def test_imgloading(self):

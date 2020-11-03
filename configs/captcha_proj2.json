@@ -4,9 +4,10 @@
   "log_config": "src/logger/logger_config.json",
   "save_dir": "saved/",
   "arch": {
-    "type": "CaptchaCNN",
+    "type": "ResNetCRNN",
     "args": {
-      "n_classes": 56
+      "n_classes": 51,
+      "input_shape": [3, 80, 160]
     }
   },
   "data_loader": {
@@ -14,10 +15,11 @@
     "args": {
       "data_path": "data/geto-project1",
       "n_len": [1, 7],
-      "train_total": 200000,
-      "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-/:;<=>?@[\\]^_`{|}~",
-      "resize_to": [200, 100],
-      "batch_size": 1280,
+      "train_total": 15000,
+      "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-:<=>?@[]^{|}~",
+      "resize_to": [160, 80],
+      "gen_size": [128, 64],
+      "batch_size": 480,
       "shuffle": false,
       "validation_split": 0.1,
       "num_workers": 0

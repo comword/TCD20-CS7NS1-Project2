@@ -14,9 +14,11 @@ from model.CaptchaCNN import CaptchaCNN
 class CaptchaDataLoader(BaseDataLoader):
 
     def __init__(self, data_path, batch_size, n_len=[5,6], train_total=5000, resize_to=[128, 64], 
-                 shuffle=True, validation_split=0.0, num_workers=0, training=True,
+                 gen_size=[128, 64], shuffle=True, validation_split=0.0, num_workers=0, training=True,
                  characters=' 0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ'):
         self.characters = characters
+        self.resize_to = resize_to
+        self.gen_size = gen_size
         self.width = resize_to[0]
         self.height = resize_to[1]
         self.n_len = n_len
@@ -29,7 +31,7 @@ class CaptchaDataLoader(BaseDataLoader):
 
         self.input_length = outputs.shape[0]
         if training:
-            self.dataset = CaptchaDataset(self.characters, self.train_total, self.width, self.height, self.input_length, self.n_len)
+            self.dataset = CaptchaDataset(self.characters, self.train_total, self.gen_size, self.resize_to, self.input_length, self.n_len)
         else:
             self.dataset = ImageDataset(data_path, transform=self.trsfm)
             self.length = self.dataset.__len__()
