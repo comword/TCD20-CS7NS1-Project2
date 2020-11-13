@@ -83,7 +83,7 @@ class CaptchaTrainer(BaseTrainer):
                 tbar.set_description('Test loss: %.3f' % (test_loss / (batch_idx + 1)))
                 
                 self.writer.set_step((epoch - 1) * len(self.valid_data_loader) + batch_idx, 'valid')
-                self.valid_metrics.update('loss', test_loss / (batch_idx + 1))
+                self.valid_metrics.update('loss', loss.item())
                 for met in self.metric_ftns:
                     self.valid_metrics.update(met.__name__, met(self, output, target))
                 self.writer.add_image('input', make_grid(data.cpu(), nrow=8, normalize=True))

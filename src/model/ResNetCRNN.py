@@ -30,17 +30,18 @@ class ResNetCRNN(nn.Module):
             nn.BatchNorm2d(256),
             nn.ReLU(inplace=True)
         )
-        self.linear1 = nn.Linear(self.infer_features(), 256)
+        # self.linear1 = nn.Linear(self.infer_features(), 256)
         
-        # RNN
-        self.rnn1 = nn.GRU(input_size=rnn_hidden_size, 
-                            hidden_size=rnn_hidden_size,
-                            bidirectional=True, 
-                            batch_first=True)
-        self.rnn2 = nn.GRU(input_size=rnn_hidden_size, 
-                            hidden_size=rnn_hidden_size,
-                            bidirectional=True, 
-                            batch_first=True)
+        # # RNN
+        # self.rnn1 = nn.GRU(input_size=rnn_hidden_size, 
+        #                     hidden_size=rnn_hidden_size,
+        #                     bidirectional=True, 
+        #                     batch_first=True)
+        # self.rnn2 = nn.GRU(input_size=rnn_hidden_size, 
+        #                     hidden_size=rnn_hidden_size,
+        #                     bidirectional=True, 
+        #                     batch_first=True)
+        self.lstm = nn.LSTM(input_size=self.infer_features(), hidden_size=rnn_hidden_size, num_layers=2, bidirectional=True)
         self.linear2 = nn.Linear(self.rnn_hidden_size*2, n_classes)
     
     def infer_features(self):
@@ -70,16 +71,17 @@ class ResNetCRNN(nn.Module):
         batch = batch.view(batch_size, T, -1) # [batch_size, T==width, num_features==channels*height]
         # print(batch.size()) # torch.Size([-1, 10, 1024])
         
-        batch = self.linear1(batch)
+        # batch = self.linear1(batch)
         # print(batch.size()) # torch.Size([-1, 10, 256])
         
-        batch, hidden = self.rnn1(batch)
-        feature_size = batch.size(2)
-        batch = batch[:, :, :feature_size//2] + batch[:, :, feature_size//2:]
-        # print(batch.size()) # torch.Size([-1, 10, 256])
+        # batch, hidden = self.rnn1(batch)
+        # feature_size = batch.size(2)
+        # batch = batch[:, :, :feature_size//2] + batch[:, :, feature_size//2:]
+        # # print(batch.size()) # torch.Size([-1, 10, 256])
         
-        batch, hidden = self.rnn2(batch)
+        # batch, hidden = self.rnn2(batch)
         # print(batch.size()) # torch.Size([-1, 10, 512])
+        batch, _ = self.lstm(batch)
         
         batch = self.linear2(batch)
         # print(batch.size()) # torch.Size([-1, 10, 20])
@@ -92,7 +94,7 @@ class ResNetCRNN(nn.Module):
 if __name__ == "__main__":
     n_classes = 63
     # height, width = 64, 128
-    height, width = 80, 160
+    height, width = 90, 180
     model = ResNetCRNN(n_classes, input_shape=(3, height, width))
     print(model.infer_features())
     inputs = torch.zeros((1, 3, height, width))

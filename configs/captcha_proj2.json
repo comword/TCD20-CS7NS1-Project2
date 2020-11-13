@@ -1,13 +1,13 @@
 {
   "name": "CaptchaProject2",
-  "n_gpu": 0,
+  "n_gpu": 1,
   "log_config": "src/logger/logger_config.json",
   "save_dir": "saved/",
   "arch": {
     "type": "ResNetCRNN",
     "args": {
-      "n_classes": 51,
-      "input_shape": [3, 80, 160]
+      "n_classes": 52,
+      "input_shape": [3, 90, 180]
     }
   },
   "data_loader": {
@@ -15,9 +15,9 @@
     "args": {
       "data_path": "data/geto-project1",
       "n_len": [1, 7],
-      "train_total": 15000,
-      "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-:<=>?@[]^{|}~",
-      "resize_to": [160, 80],
+      "train_total": 150000,
+      "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-/:<=>?@[]^_{}~",
+      "resize_to": [180, 90],
       "gen_size": [128, 64],
       "batch_size": 480,
       "shuffle": false,
@@ -30,7 +30,7 @@
   "optimizer": {
     "type": "Adam",
     "args": {
-      "lr": 0.001,
+      "lr": 0.0005,
       "weight_decay": 0,
       "amsgrad": true
     }

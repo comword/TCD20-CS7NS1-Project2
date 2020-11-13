@@ -13,7 +13,7 @@ from collections import OrderedDict
 class CaptchaCNN(nn.Module):
     def __init__(self, n_classes, input_shape):
         super(CaptchaCNN, self).__init__()
-        self.input_shape = input_shape
+        self.input_shape = tuple(input_shape)
         channels = [32, 64, 128, 256, 256]
         layers = [2, 2, 2, 2, 2]
         kernels = [3, 3, 3, 3, 3]

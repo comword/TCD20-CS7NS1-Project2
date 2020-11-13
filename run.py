@@ -53,7 +53,8 @@ class DemoMain:
         return s
 
     def main(self, image, outpath):
-        self.data_loader = CaptchaDataLoader(image, 16, training=False, shuffle=False)
+        self.data_loader = CaptchaDataLoader(image, 16, training=False,
+             shuffle=False, resize_to=self.config["data_loader"]["args"]["resize_to"])
         self.characters = self.config["data_loader"]["args"]["characters"]
         tbar = tqdm(self.data_loader)
         with torch.no_grad():
