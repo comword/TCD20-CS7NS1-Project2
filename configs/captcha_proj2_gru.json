@@ -1,10 +1,10 @@
 {
-  "name": "CaptchaProject2",
+  "name": "Proj2_ResNetGRU",
   "n_gpu": 1,
   "log_config": "src/logger/logger_config.json",
   "save_dir": "saved/",
   "arch": {
-    "type": "ResNetCRNN",
+    "type": "ResNetGRU",
     "args": {
       "n_classes": 52,
       "input_shape": [3, 90, 180]
@@ -19,7 +19,7 @@
       "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-/:<=>?@[]^_{}~",
       "resize_to": [180, 90],
       "gen_size": [128, 64],
-      "batch_size": 480,
+      "batch_size": 780,
       "shuffle": false,
       "validation_split": 0.1,
       "num_workers": 0

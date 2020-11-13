@@ -1,0 +1,56 @@
+{
+  "name": "CaptchaProject2",
+  "n_gpu": 1,
+  "log_config": "src/logger/logger_config.json",
+  "save_dir": "saved/",
+  "arch": {
+    "type": "CaptchaCNN",
+    "args": {
+      "n_classes": 51,
+      "input_shape": [3, 80, 160]
+    }
+  },
+  "data_loader": {
+    "type": "CaptchaDataLoader",
+    "args": {
+      "data_path": "data/geto-project1",
+      "n_len": [1, 7],
+      "train_total": 200000,
+      "characters": " abcdefghijklmnopqrstuvwxyz!\"#$%&()*+-:<=>?@[]^{|}~",
+      "resize_to": [160, 80],
+      "gen_size": [128, 64],
+      "batch_size": 490,
+      "shuffle": false,
+      "validation_split": 0.1,
+      "num_workers": 0
+    }
+  },
+  "loss": "ctc_loss",
+  "metrics": ["accuracy"],
+  "optimizer": {
+    "type": "Adam",
+    "args": {
+      "lr": 0.001,
+      "weight_decay": 1e-5,
+      "amsgrad": true
+    }
+  },
+  "lr_scheduler": {
+    "type": "PolynomialLR",
+    "args": {
+      "step_size": 10,
+      "iter_max": 500,
+      "power": 0.9
+    }
+  },
+  "trainer": {
+    "type": "CaptchaTrainer",
+    "args": {},
+    "epochs": 150,
+    "save_period": 15,
+    "verbosity": 2,
+    "monitor": "max val_accuracy",
+    "early_stop": 40,
+    "tensorboard": false
+  }
+}
